@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  # Serviciul de autentificare și autorizare
+  auth-service:
+    build:
+      context: ./auth-service
+    ports:
+      - "3001:3001" # Mapare port local:container
+    environment:
+      - MONGO_URI=mongodb://auth-db:27017/auth
+      - JWT_SECRET=supersecretkey
+    depends_on:
+      - auth-db
+    networks:
+      - app-network
+
+  # Baza de date pentru auth-service
+  auth-db:
+    image: mongo
+    container_name: auth-db
+    ports:
+      - "27018:27017" # Mapare port local:container pentru baza de date
+    volumes:
+      - auth-db-data:/data/db
+    networks:
+      - app-network
+
+  # Serviciul pentru baze de date
+  database-service:
+    build:
+      context: ./database-service
+    ports:
+      - "3002:3002" # Mapare port local:container
+    environment:
+      - MONGO_URI=mongodb://bookstore:27017/app
+    depends_on:
+      - bookstore
+    networks:
+      - app-network
+
+  # Baza de date pentru database-service
+  bookstore:
+    image: mongo
+    container_name: bookstore
+    ports:
+      - "27017:27017" # Mapare port local:container pentru baza de date
+    volumes:
+      - bookstore-data:/data/db
+    networks:
+      - app-network
+
+  # Serviciul de business logic
+  business-service:
+    build:
+      context: ./business-service
+    ports:
+      - "3003:3003" # Mapare port local:container
+    environment:
+      - DATABASE_SERVICE_URL=http://database-service:3002
+      - AUTH_SERVICE_URL=http://auth-service:3001
+      - PORT=3003
+    depends_on:
+      - database-service
+      - auth-service
+    links:
+      - database-service
+      - auth-service
+    networks:
+      - app-network
+
+volumes:
+  auth-db-data:
+  bookstore-data:
+
+networks:
+  app-network:
+    driver: bridge

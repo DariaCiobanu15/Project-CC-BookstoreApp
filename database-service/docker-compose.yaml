@@ -1,0 +1,25 @@
+# version: '3.8'
+# services:
+#   database-service:
+#     build: .
+#     ports:
+#       - "3002:3002" # Mapare port local:container
+#     environment:
+#       - MONGO_URI=mongodb://db:27017/database
+#     depends_on:
+#       - db
+#   db:
+#     image: mongo
+#     container_name: db
+#     ports:
+#       - "27017:27017" # Mapare port local:container pentru baza de date
+#     volumes:
+#       - mongo-data:/data/db
+#   adminer:
+#     image: adminer
+#     container_name: adminer
+#     ports:
+#       - "8080:8080" # Expune Adminer pe portul local 8080
+
+# volumes:
+#   mongo-data:

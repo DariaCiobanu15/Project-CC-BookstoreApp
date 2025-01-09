@@ -1,0 +1,15 @@
+# version: '3.8'
+
+# services:
+#   business-service:
+#     build: .
+#     ports:
+#       - "3003:3003" # Mapare port local:container
+#     environment:
+#       - MONGO_URI=mongodb://business-service:27017/bookstore
+#       - JWT_SECRET=supersecretkey
+#     depends_on:
+#       - 
+#     links:
+#       - database-service
+#       - auth-service
