@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert -f docker-compose.yaml
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: database-service
+  name: database-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: database-service
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert -f docker-compose.yaml
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/app-network: "true"
+        io.kompose.service: database-service
+    spec:
+      containers:
+      - env:
+        - name: MONGO_URI
+          value: mongodb://bookstore:27017/app
+        image: proiect-cc-1-database-service
+        imagePullPolicy: ""
+        name: database-service
+        ports:
+        - containerPort: 3002
+        resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}

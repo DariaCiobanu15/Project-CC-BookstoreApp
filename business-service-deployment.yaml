@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert -f docker-compose.yaml
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: business-service
+  name: business-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: business-service
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert -f docker-compose.yaml
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/app-network: "true"
+        io.kompose.service: business-service
+    spec:
+      containers:
+      - env:
+        - name: AUTH_SERVICE_URL
+          value: http://auth-service:3001
+        - name: DATABASE_SERVICE_URL
+          value: http://database-service:3002
+        - name: PORT
+          value: "3003"
+        image: proiect-cc-1-business-service
+        imagePullPolicy: ""
+        name: business-service
+        ports:
+        - containerPort: 3003
+        resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}
