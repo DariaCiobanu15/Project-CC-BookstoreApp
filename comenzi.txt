@@ -1,0 +1,42 @@
+minikube start --nodes=3 --cpus=2 --memory=4g --driver=docker
+
+1. Terraform
+    - fisier main.tf
+    - terraform init
+    - terraform plan
+    - terraform apply
+
+minikube start --nodes=3 --cpus=2 --memory=4g --driver=docker  --->  creează un control plane și doi workeri (3 noduri în total)
+
+check: kubectl get nodes
+
+Accesează interfața grafică Portainer: minikube service portainer -n portainer
+
+ Transformarea aplicațiilor Docker Compose în Kubernetes
+Convertirea fișierului docker-compose.yaml în resurse Kubernetes:  kompose convert -f docker-compose.yaml
+
+--- modifica version in docker-compose.yaml in 3
+
+kubectl apply -f app-network-networkpolicy.yaml
+kubectl apply -f auth-db-data-persistentvolumeclaim.yaml
+kubectl apply -f auth-db-deployment.yaml
+kubectl apply -f auth-db-service.yaml
+kubectl apply -f auth-service-deployment.yaml
+kubectl apply -f auth-service-service.yaml
+kubectl apply -f bookstore-data-persistentvolumeclaim.yaml
+kubectl apply -f bookstore-deployment.yaml
+kubectl apply -f bookstore-service.yaml
+kubectl apply -f business-service-deployment.yaml
+kubectl apply -f business-service-service.yaml
+kubectl apply -f database-service-deployment.yaml
+kubectl apply -f database-service-service.yaml
+
+Verifică podurile:
+kubectl get pods
+
+Verifică serviciile:
+kubectl get services
+
+Verifică network policies (dacă sunt relevante):
+kubectl get networkpolicy
+

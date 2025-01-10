@@ -1,21 +1,21 @@
-version: '3.8'
-services:
-  auth-service:
-    build: .
-    ports:
-      - "3001:3001" # Mapare port local:container
-    environment:
-      - MONGO_URI=mongodb://auth-db:27017/auth
-      - JWT_SECRET=supersecretkey
-    depends_on:
-      - auth-db
-  auth-db:
-    image: mongo
-    container_name: auth-db
-    ports:
-      - "27018:27017" # Mapare port local:container pentru baza de date
-    volumes:
-      - auth-db-data:/data/db
+# version: '3.8'
+# services:
+#   auth-service:
+#     build: .
+#     ports:
+#       - "3001:3001" # Mapare port local:container
+#     environment:
+#       - MONGO_URI=mongodb://auth-db:27017/auth
+#       - JWT_SECRET=supersecretkey
+#     depends_on:
+#       - auth-db
+#   auth-db:
+#     image: mongo
+#     container_name: auth-db
+#     ports:
+#       - "27018:27017" # Mapare port local:container pentru baza de date
+#     volumes:
+#       - auth-db-data:/data/db
 
-volumes:
-  auth-db-data:
+# volumes:
+#   auth-db-data:
