@@ -32,7 +32,7 @@ spec:
           value: http://database-service:3002
         - name: PORT
           value: "3003"
-        image: proiect-cc-1-business-service
+        image: 192.168.49.2:30429/proiect-cc-1-business-service
         imagePullPolicy: ""
         name: business-service
         ports:

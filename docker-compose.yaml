@@ -63,9 +63,6 @@ services:
     depends_on:
       - database-service
       - auth-service
-    links:
-      - database-service
-      - auth-service
     networks:
       - app-network
 

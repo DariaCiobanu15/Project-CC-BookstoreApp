@@ -28,7 +28,7 @@ spec:
       - env:
         - name: MONGO_URI
           value: mongodb://bookstore:27017/app
-        image: proiect-cc-1-database-service
+        image: localhost:5000/proiect-cc-1-database-service
         imagePullPolicy: ""
         name: database-service
         ports:
