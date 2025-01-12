@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: adminer
+  labels:
+    app: adminer
+spec:
+  containers:
+    - image: adminer:latest
+      name: adminer
+      ports:
+        - containerPort: 8080
+      env:
+        - name: MONGO_DB
+          value: "auth" # The database name in MongoDB
+        - name: MONGO_HOST
+          value: "auth-db" # The service name of your MongoDB
+        - name: MONGO_PORT
+          value: "27017" # Default MongoDB port
+        - name: MONGO_USER
+          value: "admin" # MongoDB username
+        - name: MONGO_PASSWORD
+          value: "admin" # MongoDB password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adminer
+spec:
+  type: NodePort
+  selector:
+    app: adminer
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30004

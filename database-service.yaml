@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: database-service
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database-service
+  template:
+    metadata:
+      labels:
+        app: database-service
+    spec:
+      containers:
+        - name: database-service
+          image: patriciaceausene/project-cc-bookstoreapp-database-service:latest
+          env:
+            - name: MONGO_URI
+              value: mongodb://bookstore-mongo.default.svc.cluster.local:27017/app
+          ports:
+            - containerPort: 3002
+              protocol: TCP
+      hostname: database-service
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: database-service
+  namespace: default
+spec:
+  selector:
+    app: database-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30002
+  type: NodePort

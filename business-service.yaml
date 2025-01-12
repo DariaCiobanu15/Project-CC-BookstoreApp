@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: business-service
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: business-service
+  template:
+    metadata:
+      labels:
+        app: business-service
+    spec:
+      containers:
+        - name: business-service
+          image: patriciaceausene/project-cc-bookstoreapp-business-service:latest
+          env:
+            - name: DATABASE_SERVICE_URL
+              value: http://database-service.default.svc.cluster.local:3002
+            - name: AUTH_SERVICE_URL
+              value: http://auth-service.default.svc.cluster.local:3001
+            - name: PORT
+              value: "3003"
+          ports:
+            - containerPort: 3003
+              protocol: TCP
+      hostname: business-service
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: business-service
+  namespace: default
+spec:
+  selector:
+    app: business-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30003
+  type: NodePort
